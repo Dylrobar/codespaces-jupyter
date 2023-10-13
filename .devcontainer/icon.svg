@@ -88,3 +88,55 @@
 <path id="path11_fill" d="M 2.25061 4.37943C 1.81886 4.39135 1.39322 4.27535 1.02722 4.04602C 0.661224 3.81668 0.371206 3.48424 0.193641 3.09052C 0.0160762 2.69679 -0.0411078 2.25935 0.0292804 1.83321C 0.0996686 1.40707 0.294486 1.01125 0.589233 0.695542C 0.883981 0.37983 1.2655 0.158316 1.68581 0.0588577C 2.10611 -0.0406005 2.54644 -0.0135622 2.95143 0.136572C 3.35641 0.286707 3.70796 0.553234 3.96186 0.902636C 4.21577 1.25204 4.3607 1.66872 4.37842 2.10027C 4.39529 2.6838 4.18131 3.25044 3.78293 3.67715C 3.38455 4.10387 2.83392 4.35623 2.25061 4.37943Z"/>
 </defs>
 </svg>
+import random
+
+class ZombieGame:
+    def __init__(self):
+        self.player_health = 100
+        self.zombie_health = 50
+        self.player_ammo = 50
+        self.zombie_count = 0
+        self.game_over = False
+
+    def display_status(self):
+        print("Zombie Survival Game")
+        print(f"Player Health: {self.player_health}")
+        print(f"Player Ammo: {self.player_ammo}")
+        print(f"Zombies: {self.zombie_count}")
+        if self.zombie_health <= 0:
+            print("You've defeated the zombie!")
+        if self.player_health <= 0:
+            print("Game Over! The zombies got you.")
+            self.game_over = True
+
+    def attack_zombie(self):
+        damage = random.randint(10, 20)
+        self.zombie_health -= damage
+        self.zombie_count += 1
+        print(f"You attacked the zombie and dealt {damage} damage.")
+
+    def run_game(self):
+        while not self.game_over:
+            self.display_status()
+            action = input("Do you want to [1] Attack the zombie or [2] Run? Enter 1 or 2: ")
+
+            if action == '1':
+                if self.player_ammo > 0:
+                    self.attack_zombie()
+                    self.player_ammo -= 1
+                else:
+                    print("You're out of ammo! Run to survive.")
+            elif action == '2':
+                print("You ran away from the zombie.")
+            else:
+                print("Invalid input. Please enter 1 or 2.")
+
+            if self.zombie_health <= 0:
+                self.zombie_health = 50
+                self.zombie_count -= 1
+
+            self.player_health -= random.randint(5, 15)
+
+if __name__ == "__main__":
+    game = ZombieGame()
+    game.run_game()
